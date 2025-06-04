@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Самые высокие здания и сооружения</title>
+        <link rel="stylesheet" href="static/style.css" />
+
+        <!-- Макрос для вывода таблицы -->
+        {% macro render_table(table_id, headers, data) %}
+        <table id="{{ table_id }}">
+            <thead>
+                <tr>
+                    {% for header in headers %}
+                    <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    {% for item in row %}
+                    <td>{{ item }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="#top" class="back-button">Назад</a>
+        {% endmacro %}
+    </head>
+    <body>
+        <!-- Навигационные ссылки -->
+        <div class="nav-links">
+            <a href="#buildings-table">Список зданий</a>
+            <a href="#type-stats">Типы зданий</a>
+            <a href="#country-stats">Статистика по странам</a>
+            <a href="#year-stats">Статистика по годам</a>
+            <a href="#buildings">Здания (2000-2018)</a>
+        </div>
+
+        <h3 id="buildings-table">Список зданий</h3>
+        {{ render_table("buildings-table", all_buildings_head, all_buildings_body) }}
+
+        <h3 id="type-stats">Типы зданий</h3>
+        {{ render_table("type-stats", stats_buildings_head, stats_buildings_body) }}
+
+        <h3 id="country-stats">Статистика по странам</h3>
+        {{ render_table("country-stats", stats_country_head, stats_country_body) }}
+
+        <h3 id="year-stats">Статистика по годам</h3>
+        {{ render_table("year-stats", stats_year_head, stats_year_body) }}
+
+        <h3 id="buildings">Список зданий за диапазон</h3>
+        {{ render_table("buildings", buildings_head, buildings_body) }}
+
+    </body>
+</html>
