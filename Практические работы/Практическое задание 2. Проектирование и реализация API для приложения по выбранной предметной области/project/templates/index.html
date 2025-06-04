@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика продаж видеоигр</title>
+    <link rel="stylesheet" href="/static/style.css">
+
+    {% macro macros_table(title, headers, data) %}
+    <section>
+        <h2>{{ title }}</h2>
+        <table>
+            <thead>
+                <tr>
+                    {% for header in headers %}
+                    <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    {% for item in row %}
+                    <td>
+                        {% if item is float %}
+                            {{ "%.2f"|format(item) }}
+                        {% else %}
+                            {{ item }}
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!--<a href="#top" class="back-button">Назад</a>-->
+    </section>
+    {% endmacro %}
+
+    {% macro macros_accordion(title, data) %}
+    <section class="accordion-section">
+        <div class="accordion-header">
+            {{ title }}
+            <span class="accordion-icon">+</span>
+        </div>
+        <div class="accordion-content">
+            <ul>
+                {% for item in data %}
+                <li>{{ item.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+    {% endmacro %}
+</head>
+<body>
+    <div class="container">
+        <h1>Статистика продаж видеоигр</h1>
+
+        {{ macros_table("1. Топ-10 самых продаваемых игр",                                           query1[0], query1[1]) }}
+        {{ macros_table("2. Топ-5 платформ по объему продаж",                                        query2[0], query2[1]) }}
+        {{ macros_table("3. Средние продажи по жанрам",                                              query3[0], query3[1]) }}
+        {{ macros_table("4. Продажи по годам",                                                       query4[0], query4[1]) }}
+        {{ macros_table("5. Самые популярные жанры по десятилетиям (Топ-3 для каждого десятилетия)", query5[0], query5[1]) }}
+
+        {{ macros_accordion("Все жанры",     genres)    }}
+        {{ macros_accordion("Все платформы", platforms) }}
+        {{ macros_accordion("Все игры",      games)     }}
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                // Проверяем, является ли кликнутый элемент уже заголовком
+                const headerElement = this.classList.contains('accordion-header')
+                    ? this
+                    : this.closest('.accordion-header');
+
+                const section = headerElement.parentElement;
+                const content = section.querySelector('.accordion-content');
+                const icon = headerElement.querySelector('.accordion-icon');
+
+                // Переключаем классы
+                headerElement.classList.toggle('open');
+                content.classList.toggle('open');
+            });
+        });
+    });
+    </script>
+</body>
+</html>
